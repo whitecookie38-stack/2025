@@ -543,18 +543,18 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                     </div>
                 </div>
 
-                <div className="overflow-x-auto rounded border border-gray-800 shadow-xl">
-                    <table className="w-full text-sm text-gray-300">
+                <div className="overflow-x-auto rounded border border-gray-800 shadow-xl pb-1">
+                    <table className="w-full text-sm text-gray-300 min-w-[500px] md:min-w-full">
                         <thead className="bg-[#2a2a2a] text-gray-400 text-xs uppercase tracking-wider font-semibold">
                             <tr>
-                                <th className="p-3 text-left">기능명</th>
-                                <th className="p-3 w-16 text-center">기본</th>
-                                <th className="p-3 w-20 text-center text-gray-200">직업</th>
-                                <th className="p-3 w-20 text-center text-yellow-100/70">관심</th>
-                                <th className="p-3 w-20 text-center text-blue-100/70">성장</th>
-                                <th className="p-3 w-16 text-center bg-[#333] text-white">합계</th>
-                                <th className="p-3 w-12 text-center text-yellow-500/70 hidden md:table-cell">1/2</th>
-                                <th className="p-3 w-12 text-center text-green-500/70 hidden md:table-cell">1/5</th>
+                                <th className="p-2 md:p-3 text-left sticky left-0 z-10 bg-[#2a2a2a] shadow-[2px_0_5px_rgba(0,0,0,0.3)]">기능명</th>
+                                <th className="p-2 md:p-3 w-16 text-center hidden md:table-cell">기본</th>
+                                <th className="p-2 md:p-3 w-16 md:w-20 text-center text-gray-200">직업</th>
+                                <th className="p-2 md:p-3 w-16 md:w-20 text-center text-yellow-100/70">관심</th>
+                                <th className="p-2 md:p-3 w-16 md:w-20 text-center text-blue-100/70">성장</th>
+                                <th className="p-2 md:p-3 w-14 md:w-16 text-center bg-[#333] text-white">합계</th>
+                                <th className="p-2 md:p-3 w-12 text-center text-yellow-500/70">1/2</th>
+                                <th className="p-2 md:p-3 w-12 text-center text-green-500/70">1/5</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-800 bg-[#1e1e1e]">
@@ -569,14 +569,17 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
 
                                 return (
                                     <tr key={skill.name} className={`hover:bg-[#252525] transition-colors ${skill.isCustom ? 'bg-blue-900/10' : ''}`}>
-                                        <td className={`p-3 font-bold flex items-center justify-between group ${skill.isCustom ? 'text-blue-400' : 'text-gray-300'}`}>
-                                            <span>{skill.name}</span>
+                                        <td className={`p-2 md:p-3 font-bold group sticky left-0 z-10 bg-[#1e1e1e] shadow-[2px_0_5px_rgba(0,0,0,0.3)] ${skill.isCustom ? 'text-blue-400' : 'text-gray-300'}`}>
+                                            <div className="flex flex-col">
+                                                <span>{skill.name}</span>
+                                                <span className="text-[9px] text-gray-600 md:hidden font-normal">Base: {displayBase}</span>
+                                            </div>
                                         </td>
-                                        <td className="p-3 text-center text-gray-600 text-xs">{displayBase}</td>
+                                        <td className="p-2 md:p-3 text-center text-gray-600 text-xs hidden md:table-cell">{displayBase}</td>
                                         <td className="p-1">
                                             <input 
                                                 type="number" 
-                                                className="w-full text-center border border-gray-700 rounded bg-[#111] text-gray-300 focus:bg-[#000] focus:border-coc-red focus:outline-none py-1"
+                                                className="w-full min-w-[40px] text-center border border-gray-700 rounded bg-[#111] text-gray-300 focus:bg-[#000] focus:border-coc-red focus:outline-none py-1.5 md:py-1 text-sm md:text-base"
                                                 value={skill.occupationPoints || ''}
                                                 onChange={(e) => handleSkillChange(idx, 'occupationPoints', parseInt(e.target.value) || 0)}
                                             />
@@ -584,7 +587,7 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                                         <td className="p-1">
                                              <input 
                                                 type="number" 
-                                                className="w-full text-center border border-gray-700 rounded bg-[#111] text-gray-300 focus:bg-[#000] focus:border-yellow-600 focus:outline-none py-1"
+                                                className="w-full min-w-[40px] text-center border border-gray-700 rounded bg-[#111] text-gray-300 focus:bg-[#000] focus:border-yellow-600 focus:outline-none py-1.5 md:py-1 text-sm md:text-base"
                                                 value={skill.interestPoints || ''}
                                                 onChange={(e) => handleSkillChange(idx, 'interestPoints', parseInt(e.target.value) || 0)}
                                             />
@@ -592,14 +595,14 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                                         <td className="p-1">
                                              <input 
                                                 type="number" 
-                                                className="w-full text-center border border-gray-700 rounded bg-[#111] text-gray-300 focus:bg-[#000] focus:border-blue-600 focus:outline-none py-1"
+                                                className="w-full min-w-[40px] text-center border border-gray-700 rounded bg-[#111] text-gray-300 focus:bg-[#000] focus:border-blue-600 focus:outline-none py-1.5 md:py-1 text-sm md:text-base"
                                                 value={skill.growth || ''}
                                                 onChange={(e) => handleSkillChange(idx, 'growth', parseInt(e.target.value) || 0)}
                                             />
                                         </td>
-                                        <td className="p-3 text-center font-black text-white bg-[#252525] border-l border-r border-gray-800">{finalTotal}</td>
-                                        <td className="p-3 text-center text-yellow-400 font-bold text-xs hidden md:table-cell">{calculateHalf(finalTotal)}</td>
-                                        <td className="p-3 text-center text-green-400 font-bold text-xs hidden md:table-cell">{calculateFifth(finalTotal)}</td>
+                                        <td className="p-2 md:p-3 text-center font-black text-white bg-[#252525] border-l border-r border-gray-800">{finalTotal}</td>
+                                        <td className="p-2 md:p-3 text-center text-yellow-400 font-bold text-xs">{calculateHalf(finalTotal)}</td>
+                                        <td className="p-2 md:p-3 text-center text-green-400 font-bold text-xs">{calculateFifth(finalTotal)}</td>
                                     </tr>
                                 );
                             })}
