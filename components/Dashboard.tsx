@@ -151,17 +151,17 @@ const Dashboard: React.FC<Props> = ({ onSelectCharacter }) => {
             {/* Left Column: Create New */}
             <div className="lg:col-span-1">
                 <div className="bg-gradient-to-br from-[#1e1e1e] to-[#252525] p-6 rounded-sm shadow-2xl border border-gray-800 hover:border-coc-red/50 transition duration-300 group relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-32 w-32 text-coc-red" viewBox="0 0 20 20" fill="currentColor">
                              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                         </svg>
                     </div>
 
-                    <h2 className="text-2xl font-serif font-bold mb-6 text-gray-100 border-l-4 border-coc-red pl-3">
+                    <h2 className="text-2xl font-serif font-bold mb-6 text-gray-100 border-l-4 border-coc-red pl-3 relative z-10">
                         새 탐사자 등록
                     </h2>
 
-                    <div className="mb-8 space-y-4">
+                    <div className="mb-8 space-y-4 relative z-10">
                         <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wider mb-2 font-bold">빠른 이름 생성</p>
                             <div className="grid grid-cols-3 gap-2">
@@ -186,7 +186,7 @@ const Dashboard: React.FC<Props> = ({ onSelectCharacter }) => {
 
                     <button 
                         onClick={() => onSelectCharacter(null)}
-                        className="w-full bg-coc-red hover:bg-red-900 text-white font-bold py-4 rounded-sm shadow-lg transition-all duration-300 flex items-center justify-center gap-3 group-hover:shadow-red-900/20"
+                        className="w-full bg-coc-red hover:bg-red-900 text-white font-bold py-4 rounded-sm shadow-lg transition-all duration-300 flex items-center justify-center gap-3 group-hover:shadow-red-900/20 relative z-10"
                     >
                         <span>작성 시작하기</span>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:translate-x-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
