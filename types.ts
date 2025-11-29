@@ -21,6 +21,11 @@ export interface Skill {
   isCustom?: boolean; // Indicates if the skill was added by the user
 }
 
+export interface ScenarioEntry {
+  name: string;
+  result: string;
+}
+
 export interface Character {
   id: string;
   name: string;
@@ -58,6 +63,7 @@ export interface Character {
   // Backstory
   backstory: string;
   gear: string;
+  scenarios?: ScenarioEntry[]; // List of explored scenarios
   
   // Meta
   updatedAt: string;

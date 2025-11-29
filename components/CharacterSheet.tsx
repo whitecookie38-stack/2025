@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Character, Skill, Stats } from '../types';
+import { Character, Skill, Stats, ScenarioEntry } from '../types';
 import { BASE_SKILLS } from '../constants';
 import { calculateDamageBonusAndBuild, calculateMoveRate, getAgeRuleDescription, calculateBaseStats, calculateHalf, calculateFifth } from '../utils/cocRules';
 import StatBox from './StatBox';
@@ -21,6 +21,10 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
   const [newSkillName, setNewSkillName] = useState('');
   const [newSkillBase, setNewSkillBase] = useState(0);
 
+  // State for Scenario Addition
+  const [newScenName, setNewScenName] = useState('');
+  const [newScenResult, setNewScenResult] = useState('');
+
   // Initialize Character State
   const [char, setChar] = useState<Character>(() => {
     if (initialData) {
@@ -28,10 +32,11 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
       if (!initialData.stats) {
          return {
              ...initialData,
-             stats: calculateBaseStats(initialData.rawStats)
+             stats: calculateBaseStats(initialData.rawStats),
+             scenarios: initialData.scenarios || []
          };
       }
-      return initialData;
+      return { ...initialData, scenarios: initialData.scenarios || [] };
     }
     
     // Default New Character
@@ -61,6 +66,7 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
       skills: BASE_SKILLS.map(s => ({ ...s, occupationPoints: 0, interestPoints: 0, growth: 0 })),
       backstory: '',
       gear: '',
+      scenarios: [],
       updatedAt: new Date().toISOString()
     };
   });
@@ -159,6 +165,31 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
       }));
       setNewSkillName('');
       setNewSkillBase(0);
+  };
+
+  const handleAddScenario = () => {
+      if (!newScenName.trim()) {
+          alert("시나리오 제목을 입력해주세요.");
+          return;
+      }
+      const newEntry: ScenarioEntry = {
+          name: newScenName,
+          result: newScenResult
+      };
+      setChar(prev => ({
+          ...prev,
+          scenarios: [...(prev.scenarios || []), newEntry]
+      }));
+      setNewScenName('');
+      setNewScenResult('');
+  };
+
+  const handleDeleteScenario = (index: number) => {
+      if (!window.confirm("이 기록을 삭제하시겠습니까?")) return;
+      setChar(prev => ({
+          ...prev,
+          scenarios: (prev.scenarios || []).filter((_, i) => i !== index)
+      }));
   };
 
   // Point Budgets
@@ -661,6 +692,67 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                         value={char.gear}
                         onChange={(e) => setChar({...char, gear: e.target.value})}
                     ></textarea>
+                </div>
+                
+                {/* Scenarios Section */}
+                <div>
+                    <label className="block text-sm font-bold text-gray-400 uppercase mb-2 tracking-wider">탐사한 시나리오 및 결과</label>
+                    <div className="bg-[#1e1e1e] border border-gray-800 rounded-sm p-4">
+                        {/* List */}
+                        {(char.scenarios || []).length > 0 && (
+                            <div className="space-y-3 mb-6">
+                                {char.scenarios?.map((scen, idx) => (
+                                    <div key={idx} className="flex flex-col md:flex-row gap-2 bg-[#151515] p-3 rounded border border-gray-700">
+                                        <div className="md:w-1/3 border-b md:border-b-0 md:border-r border-gray-700 pb-2 md:pb-0 md:pr-3">
+                                            <span className="font-bold text-gray-300">{scen.name}</span>
+                                        </div>
+                                        <div className="flex-1 text-gray-400 text-sm pl-0 md:pl-2">
+                                            {scen.result}
+                                        </div>
+                                        <button 
+                                            onClick={() => handleDeleteScenario(idx)}
+                                            className="text-gray-600 hover:text-red-500 self-end md:self-start p-1"
+                                            title="삭제"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        
+                        {/* Add New */}
+                        <div className="flex flex-col md:flex-row gap-3 items-start md:items-end bg-[#1a1a1a] p-3 rounded border border-gray-700 border-dashed">
+                             <div className="w-full md:w-1/3">
+                                <label className="text-[10px] text-gray-500 uppercase font-bold block mb-1">시나리오 제목</label>
+                                <input 
+                                    type="text" 
+                                    className="w-full bg-[#111] border border-gray-600 rounded p-2 text-sm text-gray-200 focus:outline-none focus:border-coc-red"
+                                    placeholder="예: 악령의 집"
+                                    value={newScenName}
+                                    onChange={(e) => setNewScenName(e.target.value)}
+                                />
+                             </div>
+                             <div className="flex-1 w-full">
+                                <label className="text-[10px] text-gray-500 uppercase font-bold block mb-1">결과 및 메모</label>
+                                <input 
+                                    type="text" 
+                                    className="w-full bg-[#111] border border-gray-600 rounded p-2 text-sm text-gray-200 focus:outline-none focus:border-coc-red"
+                                    placeholder="예: 생환, 고서적 획득"
+                                    value={newScenResult}
+                                    onChange={(e) => setNewScenResult(e.target.value)}
+                                />
+                             </div>
+                             <button 
+                                onClick={handleAddScenario}
+                                className="w-full md:w-auto bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm font-bold transition whitespace-nowrap"
+                             >
+                                추가
+                             </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )}
