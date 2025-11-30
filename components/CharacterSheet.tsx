@@ -532,9 +532,9 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
 
         {/* SKILLS TAB */}
         {activeTab === 'skills' && (
-            <div className="animate-fade-in">
+            <div className="animate-fade-in relative">
                 
-                {/* Points Summary */}
+                {/* Points Summary (Top) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     {/* Occupation Points */}
                     <div className="bg-[#1e1e1e] p-4 rounded-sm border border-gray-800 shadow-lg">
@@ -574,7 +574,7 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                     </div>
                 </div>
 
-                <div className="overflow-x-auto rounded border border-gray-800 shadow-xl pb-1">
+                <div className="overflow-x-auto rounded border border-gray-800 shadow-xl pb-1 mb-16">
                     <table className="w-full text-sm text-gray-300 min-w-[500px] md:min-w-full">
                         <thead className="bg-[#2a2a2a] text-gray-400 text-xs uppercase tracking-wider font-semibold">
                             <tr>
@@ -584,8 +584,8 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                                 <th className="p-2 md:p-3 w-16 md:w-20 text-center text-yellow-100/70">관심</th>
                                 <th className="p-2 md:p-3 w-16 md:w-20 text-center text-blue-100/70">성장</th>
                                 <th className="p-2 md:p-3 w-14 md:w-16 text-center bg-[#333] text-white">합계</th>
-                                <th className="p-2 md:p-3 w-12 text-center text-yellow-500/70">1/2</th>
-                                <th className="p-2 md:p-3 w-12 text-center text-green-500/70">1/5</th>
+                                <th className="p-2 md:p-3 w-12 text-center text-yellow-400/90">1/2</th>
+                                <th className="p-2 md:p-3 w-12 text-center text-green-400/90">1/5</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-800 bg-[#1e1e1e]">
@@ -667,6 +667,28 @@ const CharacterSheet: React.FC<Props> = ({ initialData, onSave, onBack }) => {
                         >
                             추가
                         </button>
+                    </div>
+                </div>
+
+                {/* Floating Summary Bar */}
+                <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30 bg-[#1e1e1e]/95 backdrop-blur-md border border-gray-700 shadow-2xl rounded-full px-6 py-3 flex items-center gap-6 text-sm whitespace-nowrap animate-slide-up">
+                    <div className="flex flex-col items-center">
+                        <span className="text-[10px] text-gray-500 uppercase font-bold">직업</span>
+                        <span className={`font-mono font-bold ${usedOccPoints > maxOccPoints ? 'text-red-500' : 'text-green-500'}`}>
+                            {usedOccPoints} <span className="text-gray-600 text-[10px]">/ {maxOccPoints}</span>
+                        </span>
+                    </div>
+                    <div className="w-px h-6 bg-gray-700"></div>
+                    <div className="flex flex-col items-center">
+                        <span className="text-[10px] text-gray-500 uppercase font-bold">관심</span>
+                        <span className={`font-mono font-bold ${usedInterestPoints > maxInterestPoints ? 'text-red-500' : 'text-green-500'}`}>
+                            {usedInterestPoints} <span className="text-gray-600 text-[10px]">/ {maxInterestPoints}</span>
+                        </span>
+                    </div>
+                    <div className="w-px h-6 bg-gray-700"></div>
+                    <div className="flex flex-col items-center">
+                        <span className="text-[10px] text-gray-400 uppercase font-bold">총 합계</span>
+                        <span className="font-mono font-bold text-white text-lg leading-none">{usedOccPoints + usedInterestPoints}</span>
                     </div>
                 </div>
             </div>
